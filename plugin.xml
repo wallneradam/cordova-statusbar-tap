@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+		id="hu.bitbaro.statusbar-tap" version="0.1.0">
+    <name>Cordova StatusbarTap</name>
+    <description>Cordova StatusbarTap plugin for iOS</description>
+	<authod>Adam Wallner</authod>
+    <license>MIT</license>
+    <keywords>cordova,iOS,tap,statusbar</keywords>
+
+    <js-module src="www/statusbartap.js" name="StatusbarTap">
+    	<clobbers target="window.StatusbarTap" />
+    </js-module>
+
+    <!-- ios -->
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="StatusbarTap">
+                <param name="ios-package" value="StatusbarTap"/>
+            </feature>
+        </config-file>
+
+        <header-file src="src/ios/StatusbarTap.h" />
+        <source-file src="src/ios/StatusbarTap.m" />
+    </platform>
+</plugin>

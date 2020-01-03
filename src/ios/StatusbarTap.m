@@ -3,6 +3,7 @@
 //
 
 #import "StatusbarTap.h"
+#import <WebKit/WebKit.h>
 
 @implementation StatusbarTap {
 }
@@ -13,13 +14,13 @@
  */
 - (void)removeScrollsToTop:(UIView *)v {
     if ([v isKindOfClass:[UIScrollView class]]) {
-        
+
         UIScrollView *scrollView = (UIScrollView*)v;
         if (scrollView.scrollsToTop) {
             scrollView.scrollsToTop = NO;
         }
     }
-    
+
     for (UIView *sv in [v subviews]) {
         [self removeScrollsToTop:sv];
     }
@@ -41,7 +42,7 @@
 
 		// Add it to the webView as a subView
         [self.webView.superview addSubview:sv];
-        
+
         initialized = YES;
     }
 }
@@ -51,7 +52,12 @@
  */
 - (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView {
     // Callback JS on statusbar tap
-    [(UIWebView *)self.webView stringByEvaluatingJavaScriptFromString:@"var evt = document.createEvent(\"Event\"); evt.initEvent(\"statusbarTap\",true,true); window.dispatchEvent(evt);"];
+    NSString *js = @"var evt = document.createEvent(\"Event\"); evt.initEvent(\"statusbarTap\",true,true); window.dispatchEvent(evt);";
+    if ([self.webView isKindOfClass:[UIWebView class]]) {
+        [(UIWebView *)self.webView stringByEvaluatingJavaScriptFromString:js];
+    } else {
+        [(WKWebView *)self.webView evaluateJavaScript:js completionHandler:nil];
+    }
     return NO;
 }
 

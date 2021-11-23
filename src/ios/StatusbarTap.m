@@ -53,11 +53,15 @@
 - (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView {
     // Callback JS on statusbar tap
     NSString *js = @"var evt = document.createEvent(\"Event\"); evt.initEvent(\"statusbarTap\",true,true); window.dispatchEvent(evt);";
+    #if !WK_WEB_VIEW_ONLY
     if ([self.webView isKindOfClass:[UIWebView class]]) {
         [(UIWebView *)self.webView stringByEvaluatingJavaScriptFromString:js];
     } else {
+    #endif
         [(WKWebView *)self.webView evaluateJavaScript:js completionHandler:nil];
+    #if !WK_WEB_VIEW_ONLY
     }
+    #endif
     return NO;
 }
 
